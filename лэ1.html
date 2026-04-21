@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<title>Эстетика Тела</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@300;500&display=swap" rel="stylesheet">
+
+<style>
+* {margin:0;padding:0;box-sizing:border-box;}
+
+body {
+    font-family: 'Playfair Display', serif;
+    overflow: hidden;
+}
+
+/* ОСНОВА */
+.main {
+    height: 100vh;
+    position: relative;
+}
+
+/* ФОНЫ */
+.bg {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-position: center;
+    background-size: cover;
+    transition: transform 1.2s ease, filter 1.2s ease, opacity 0.8s ease;
+}
+
+.bg-main {
+    background-image: url('https://imgfy.ru/ib/hcuTT1XV4x5P472_1776769932.webp');
+}
+
+.bg-hover {
+    background-image: url('https://images.unsplash.com/photo-1588776814546-ec7e0f0c9a3c');
+    opacity: 0;
+}
+
+/* ПРЕМИУМ ЭФФЕКТ */
+.main.hover .bg-main {
+    transform: scale(1.1);
+    filter: blur(6px) brightness(0.7);
+}
+
+.main.hover .bg-hover {
+    opacity: 1;
+    transform: scale(1.05);
+}
+
+/* overlay */
+.overlay {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: rgba(255,255,255,0.65);
+}
+
+/* верх */
+.top-nav {
+    position: absolute;
+    top: 30px;
+    right: 60px;
+    display: flex;
+    gap: 30px;
+    z-index: 2;
+}
+
+.top-nav a {
+    cursor: pointer;
+    color: #6e5f57;
+    text-decoration: none;
+}
+
+/* центр */
+.center {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    z-index: 2;
+}
+
+/* НАЗВАНИЕ - ЦВЕТ ИЗМЕНЕН НА ТЕМНЫЙ */
+.center h1 {
+    font-size: 100px;
+    color: #6e5f57; /* Тот же цвет, что и у подзаголовка */
+    text-shadow: 0 2px 4px rgba(0,0,0,0.1); /* Легкая тень для читаемости */
+}
+
+.center p {
+    font-size: 26px;
+    margin-top: 10px;
+    color: #6e5f57;
+}
+
+.sale {
+    margin-top: 20px;
+    font-size: 20px;
+    color: #b68c6c;
+}
+
+/* кнопки */
+.bottom-menu {
+    position: absolute;
+    bottom: 50px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    gap: 25px;
+    z-index: 2;
+}
+
+.menu-item {
+    padding: 15px 35px;
+    border-radius: 40px;
+    background: rgba(255,255,255,0.7);
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.menu-item:hover {
+    background: #fff;
+    transform: translateY(-3px);
+}
+
+/* МОДАЛКА */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    background: rgba(0,0,0,0.5);
+    z-index: 999;
+}
+
+.modal.active {
+    display: flex;
+}
+
+/* фото */
+.modal-box {
+    background: #fff;
+    padding: 15px;
+    border-radius: 20px;
+    text-align: center;
+    max-width: 90%;
+    max-height: 90%;
+}
+
+.modal-box img {
+    max-width: 450px; 
+    max-height: 70vh;
+    width: 100%;
+    height: auto;
+    border-radius: 15px;
+    display: block;
+    margin: 0 auto;
+}
+
+/* текст popup */
+.popup {
+    background: #fff;
+    padding: 40px;
+    border-radius: 20px;
+    text-align: center;
+    max-width: 500px;
+}
+
+.popup a {
+    display: block;
+    margin-top: 15px;
+    color: #8c756a;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+/* закрыть */
+.close {
+    margin-top: 15px;
+    cursor: pointer;
+    color: #6e5f57;
+    font-weight: bold;
+}
+</style>
+</head>
+
+<body>
+
+<div class="main" id="main">
+
+    <div class="bg bg-main"></div>
+    <div class="bg bg-hover"></div>
+    <div class="overlay"></div>
+
+    <div class="top-nav">
+        <a onclick="openInfo('master')">О мастере</a>
+        <a onclick="openInfo('contacts')">Контакты</a>
+        <a onclick="openInfo('location')">Место нахождения</a>
+    </div>
+
+    <div class="center">
+        <h1>Эстетика Тела</h1>
+        <p>Студия лазерной эпиляции</p>
+        <div class="sale">Первое посещение −50% на комплексы</div>
+    </div>
+
+    <div class="bottom-menu">
+        <div class="menu-item" onclick="openImage('price')">Прайс-лист</div>
+
+        <div class="menu-item"
+             onmouseenter="hoverOn()"
+onmouseleave="hoverOff()"
+             onclick="openImage('abonement')">
+             Абонемент
+        </div>
+
+        <div class="menu-item" onclick="openImage('recom')">Рекомендации</div>
+    </div>
+
+</div>
+
+<div class="modal" id="modal">
+    <div class="modal-box">
+        <img id="modalImg" src="" alt="Изображение">
+        <div class="close" onclick="closeModal()">Закрыть</div>
+    </div>
+</div>
+
+<div class="modal" id="infoModal">
+    <div class="popup" id="infoContent"></div>
+</div>
+
+<script>
+const main = document.getElementById('main');
+const modal = document.getElementById('modal');
+const modalImg = document.getElementById('modalImg');
+const infoModal = document.getElementById('infoModal');
+const infoContent = document.getElementById('infoContent');
+
+/* hover */
+function hoverOn(){ main.classList.add('hover'); }
+function hoverOff(){ main.classList.remove('hover'); }
+
+/* фото */
+function openImage(type){
+    modal.classList.add('active');
+
+    if(type==='price'){
+        modalImg.src="https://imgfy.ru/ib/PsH3tyl7DNdjxyJ_1776772709.webp";
+    }
+    if(type==='abonement'){
+        modalImg.src="https://imgfy.ru/ib/YEkkGSoGCgUGh3h_1776772829.webp";
+    }
+    if(type==='recom'){
+        modalImg.src="https://imgfy.ru/ib/urLtOlKahrmtWEp_1776772846.webp";
+    }
+}
+
+function closeModal(){
+    modal.classList.remove('active');
+}
+
+/* инфо */
+function openInfo(type){
+    infoModal.classList.add('active');
+
+    if(type==='master'){
+        infoContent.innerHTML=`
+        <h2>О мастере</h2>
+        <p>Меня зовут Анастасия — мастер лазерной эпиляции</p>
+        <p>Медицинское образование</p>
+        <p>🌟 Индивидуальный подход</p>
+        <p>🌟 99% положительных результатов</p>
+        <div class="close" onclick="closeInfo()">Закрыть</div>`;
+    }
+
+    if(type==='contacts'){
+        infoContent.innerHTML=`
+        <h2>Контакты</h2>
+        <p>📞 8 (952) 767-46-48</p>
+        <a href="https://vk.com/estetika_tela_nn" target="_blank">Перейти в VK</a>
+        <a href="https://t.me/estetika_lazer_nn" target="_blank">Telegram канал</a>
+        <div class="close" onclick="closeInfo()">Закрыть</div>`;
+    }
+
+    if(type==='location'){
+        infoContent.innerHTML=`
+        <h2>Местоположение</h2>
+        <p>Гордеевская 7</p>
+        <p>2 этаж, кабинет 221</p>
+        <div class="close" onclick="closeInfo()">Закрыть</div>`;
+    }
+}
+
+function closeInfo(){
+    infoModal.classList.remove('active');
+}
+
+/* Закрытие при клике вне контента */
+window.onclick = function(event) {
+    if (event.target == modal) closeModal();
+    if (event.target == infoModal) closeInfo();
+}
+</script>
+
+</body>
+</html>
